@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        :root {
+            --bg-color: #ba4949;
+            --box-color: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            background-color: var(--box-color);
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .modes {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0.6;
+            padding: 5px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .mode-btn.active {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .timer-display {
+            font-size: 80px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .main-btn {
+            background-color: #ffffff;
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #ebebeb;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+        }
+
+        .main-btn:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .reset-btn:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Timer Mode Selection -->
+        <div class="modes">
+            <button class="mode-btn active" data-mode="pomodoro" data-time="25">Pomodoro</button>
+            <button class="mode-btn" data-mode="shortBreak" data-time="5">Short Break</button>
+            <button class="mode-btn" data-mode="longBreak" data-time="15">Long Break</button>
+        </div>
+
+        <!-- Time Display -->
+        <div class="timer-display" id="timer">25:00</div>
+
+        <!-- Action Controls -->
+        <div class="controls">
+            <button class="main-btn" id="start-btn">Start</button>
+            <button class="reset-btn" id="reset-btn">Reset</button>
+        </div>
+    </div>
+
+    <!-- Audio Alert (Using standard HTML5 Audio synthesis to avoid broken external file links) -->
+    <script>
+        // App State
+        let timerInterval = null;
+        let isRunning = false;
+        let currentMode = 'pomodoro';
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+
+        // Mode Configuration
+        const modeConfigs = {
+            pomodoro: { time: 25, color: '#ba4949' },
+            shortBreak: { time: 5, color: '#38858a' },
+            longBreak: { time: 15, color: '#397097' }
+        };
+
+        // DOM Elements
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+
+        // Initialize App
+        function init() {
+            setupEventListeners();
+            switchMode('pomodoro');
+        }
+
+        // Event Setup
+        function setupEventListeners() {
+            startBtn.addEventListener('click', toggleTimer);
+            resetBtn.addEventListener('click', resetTimer);
+
+            modeButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const mode = e.target.getAttribute('data-mode');
+                    switchMode(mode);
+                });
+            });
+        }
+
+        // Main Logic Functions
+        function toggleTimer() {
+            if (isRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            isRunning = true;
+            startBtn.innerText = 'Pause';
+            startBtn.style.color = modeConfigs[currentMode].color;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    playAlarm();
+                    handleTimerCompletion();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isRunning = false;
+            startBtn.innerText = 'Start';
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = modeConfigs[currentMode].time * 60;
+            updateDisplay();
+        }
+
+        function switchMode(mode) {
+            pauseTimer();
+            currentMode = mode;
+            timeLeft = modeConfigs[currentMode].time * 60;
+
+            // Update UI Theme
+            document.documentElement.style.setProperty('--bg-color', modeConfigs[mode].color);
+            
+            modeButtons.forEach(btn => {
+                if (btn.getAttribute('data-mode') === mode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            // Update Page Interface
+            timerDisplay.innerText = formattedTime;
+            
+            // Update Browser Tab Title
+            const modeLabel = currentMode === 'pomodoro' ? 'Focus' : 'Break';
+            document.title = `${formattedTime} - ${modeLabel}!`;
+        }
+
+        function handleTimerCompletion() {
+            isRunning = false;
+            startBtn.innerText = 'Start';
+            
+            // Simple auto-switch logic
+            if (currentMode === 'pomodoro') {
+                alert('Time for a break!');
+                switchMode('shortBreak');
+            } else {
+                alert('Break is over! Time to focus.');
+                switchMode('pomodoro');
+            }
+        }
+
+        // Web Audio API Synth (Generates alert beep without needing external .mp3 files)
+        function playAlarm() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Beep 1
+                createBeep(audioCtx, 440, 0, 0.2);
+                // Beep 2
+                createBeep(audioCtx, 880, 0.2, 0.4);
+            } catch (e) {
+                console.error("Audio playback not supported or blocked by browser custom policies.");
+            }
+        }
+
+        function createBeep(ctx, frequency, startTime, duration) {
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.value = frequency;
+
+            gainNode.gain.setValueAtTime(0.3, ctx.currentTime + startTime);
+            // Smooth fade out
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + startTime + duration);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            oscillator.start(ctx.currentTime + startTime);
+            oscillator.stop(ctx.currentTime + startTime + duration);
+        }
+
+        // Start execution on window load
+        init();
+    </script>
+</body>
+</html>

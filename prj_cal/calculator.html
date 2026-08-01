@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>數學與進制轉換器</title>
+</head>
+<body>
+
+    <!-- 1. 三角函數計算器 -->
+    <h2>三角函數計算 (0 - 360度)</h2>
+    <input type="number" id="angleInput" placeholder="請輸入角度">
+    <button onclick="calculate()">計算</button>
+    <p>Sin 值: <span id="sinOutput">0.00</span></p>
+    <p>Cos 值: <span id="cosOutput">0.00</span></p>
+
+    <hr>
+
+    <!-- 2. 進制轉換器 -->
+    <h2>十進制轉換 (0 - 255)</h2>
+    <input type="number" id="decInput" placeholder="請輸入 0-255 數字">
+    <button onclick="convert()">轉換</button>
+    <p>十六進制 (HEX): <span id="hexOutput">00</span></p>
+    <p>二進制 (Binary): <span id="binOutput">00000000</span></p>
+
+    <!-- JavaScript 程式碼片段 -->
+    <script>
+    function calculate() {
+        const angle = parseFloat(document.getElementById('angleInput').value);
+        
+        // 修正：補上 < 符號
+        if (isNaN(angle) || angle < 0 || angle > 360) {
+            alert("Please enter a valid angle between 0 and 360 degrees");
+            return;
+        }
+        
+        const radians = angle * Math.PI / 180;
+        const sinValue = Math.round(Math.sin(radians) * 100) / 100;
+        const cosValue = Math.round(Math.cos(radians) * 100) / 100;
+        
+        document.getElementById('sinOutput').textContent = sinValue.toFixed(2);
+        document.getElementById('cosOutput').textContent = cosValue.toFixed(2);
+    }
+
+    function convert() {
+        const dec = parseInt(document.getElementById('decInput').value, 10);
+        
+        // 修正：補上 < 符號
+        if (isNaN(dec) || dec < 0 || dec > 255) {
+            alert("Please enter a valid decimal between 0 and 255");
+            return;
+        }
+        
+        // 修正：將 padStart(8, '0') 改為 (2, '0') 以符合 255 的 8-bit/1-byte 規格
+        const hex = dec.toString(16).padStart(2, '0');
+        document.getElementById('hexOutput').textContent = hex.toUpperCase();
+        
+        const bin = dec.toString(2).padStart(8, '0');
+        document.getElementById('binOutput').textContent = bin;
+    }
+    </script>
+</body>
+</html>
