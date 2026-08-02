@@ -12,13 +12,11 @@
             --text-muted: #718096;
             --primary: #4a5568;
         }
-        
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: var(--bg-color);
@@ -30,7 +28,6 @@
             align-items: center;
             min-height: 100vh;
         }
-
         /* 頂部切換頁籤 */
         .tab-container {
             display: flex;
@@ -40,7 +37,6 @@
             padding: 6px;
             border-radius: 8px;
         }
-
         .tab-btn {
             background: none;
             border: none;
@@ -52,41 +48,33 @@
             border-radius: 6px;
             transition: all 0.2s;
         }
-
         .tab-btn.active {
             background: var(--card-bg);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-
         .container {
             max-width: 1000px;
             width: 100%;
             text-align: center;
         }
-
-        /* 專案區塊控制 */
         .project-section {
             display: none;
         }
         .project-section.active {
             display: block;
         }
-
         header {
             margin-bottom: 40px;
         }
-
         header h1 {
             font-size: 2.5rem;
             color: #1a202c;
             margin-bottom: 10px;
         }
-
         header p {
             color: var(--text-muted);
             font-size: 1.1rem;
         }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -94,7 +82,6 @@
             margin-top: 20px;
             width: 100%;
         }
-
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -107,7 +94,6 @@
             align-items: center;
             border-top: 5px solid var(--primary);
         }
-
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -116,19 +102,16 @@
         .card.cal { --primary: #3182ce; }
         .card.timer { --primary: #dd6b20; }
         .card.todo { --primary: #38a169; }
-        .card.payment { --primary: #6b46c1; } /* 新增：金流專案專屬藍紫色 */
-
+        .card.payment { --primary: #6b46c1; } 
         .icon {
             font-size: 3.5rem;
             margin-bottom: 15px;
         }
-
         .card h3 {
             font-size: 1.4rem;
             margin-bottom: 12px;
             color: #2d3748;
         }
-
         .card p {
             color: var(--text-muted);
             font-size: 0.95rem;
@@ -136,7 +119,6 @@
             text-align: center;
             min-height: 45px;
         }
-
         .btn {
             background-color: var(--primary);
             color: white;
@@ -149,12 +131,9 @@
             border: none;
             cursor: pointer;
         }
-
         .btn:hover {
             opacity: 0.9;
         }
-
-        /* 金流專案線上展示外觀 */
         .showcase-container {
             background: var(--card-bg);
             border-radius: 12px;
@@ -165,21 +144,18 @@
             margin: 0 auto;
             border-top: 5px solid #6b46c1;
         }
-
         .showcase-container h2 {
             font-size: 2rem;
             color: #1a202c;
             margin-bottom: 10px;
             text-align: center;
         }
-
         .showcase-container .note {
             color: var(--text-muted);
             text-align: center;
             font-size: 0.95rem;
             margin-bottom: 30px;
         }
-
         .demo-img {
             display: block;
             max-width: 100%;
@@ -189,17 +165,14 @@
             margin: 20px auto 30px auto;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-
         .tech-list {
             margin-top: 20px;
             padding-left: 20px;
         }
-
         .tech-list li {
             margin-bottom: 10px;
             color: #4a5568;
         }
-
         footer {
             margin-top: 60px;
             color: var(--text-muted);
@@ -210,14 +183,10 @@
     </style>
 </head>
 <body>
-
-    <!-- 頂部切換選單：與原本美感一致的頁籤 -->
     <div class="tab-container">
         <button id="tab1" class="tab-btn active" onclick="switchSection(1)">前端小工具集</button>
         <button id="tab2" class="tab-btn" onclick="switchSection(2)">後端金流專案</button>
     </div>
-
-    <!-- 區塊一：你原本的三個前端小工具 -->
     <div id="section1" class="container project-section active">
         <header>
             <h1>11430051 的作品集中心</h1>
@@ -225,23 +194,18 @@
         </header>
 
         <div class="grid">
-            <!-- 專案 1: 計算機 -->
             <div class="card cal">
                 <div class="icon">🧮</div>
                 <h3>計算機專案 (prj_cal)</h3>
                 <p>功能完善的動態網頁計算機，支援基礎四則運算功能。</p>
                 <button class="btn" onclick="navigateTo('prj_cal', 'calculator.html')">開啟專案</button>
             </div>
-
-            <!-- 專案 2: 計時器 -->
             <div class="card timer">
                 <div class="icon">⏱️</div>
                 <h3>計時器專案 (prj_timer)</h3>
                 <p>線上的碼錶計時工具，適合基礎的時間追蹤與速度管理。</p>
                 <button class="btn" onclick="navigateTo('prj_timer', 'timer.html')">開啟專案</button>
             </div>
-
-            <!-- 專案 3: 待辦事項 -->
             <div class="card todo">
                 <div class="icon">📝</div>
                 <h3>待辦事項專案 (prj_todo)</h3>
@@ -251,44 +215,52 @@
         </div>
     </div>
 
-    <!-- 區塊二：全新金流專案（線上靜態展示版） -->
-    <div id="section2" class="container project-section">
-        <div class="showcase-container">
-            <h2>綠界金流串接與 Debug 實作</h2>
-            <p class="note">⚠️ 提示：本專案包含 Node.js 後端伺服器與私鑰環境，無法在 GitHub Pages 靜態網頁直接執行付款。</p>
-            
-            <!-- 專案執行畫面截圖位置 -->
-            <img class="demo-img" src="camp-demo.png" alt="綠界金流測試畫面（請將截圖命名為 camp-demo.png 放入資料夾中）">
-            
-            <h3>🛠️ 技術亮點與實作內容</h3>
-            <ul class="tech-list">
-                <li><strong>後端環境建置</strong>：使用 <strong>Node.js / Express</strong> 搭建輕量化網頁伺服器。</li>
-                <li><strong>資安防護隔離</strong>：導入 <strong>dotenv</strong> 套件，將敏感的 <code>HashKey</code> 與 <code>HashIV</code> 抽離至 <code>.env</code> 環境變數中，防止私鑰外洩。</li>
-                <li><strong>官方 SDK 整合</strong>：串接 <code>ecpay_aio_nodejs</code> 套件，自動生成符合規格的 SHA256 加密檢查碼（CheckMacValue）。</li>
-                <li><strong>自動化除錯練習</strong>：成功修正專案中刻意保留的時間戳記與語法錯誤，實現本機環境與綠界測試付款頁面的無縫跳轉。</li>
-            </ul>
-        </div>
-    </div>
 
-    <!-- 頁尾 -->
+    <div id="section2" class="container project-section"> 
+    <div class="showcase-container"> 
+        <h2>綠界金流串接與實戰測試</h2> 
+        <p class="note">💡 提示：請確保您的本機 Node.js 伺服器（server.js）已成功啟動，且 <code>.env</code> 私鑰檔案配置正確。</p> 
+        
+        <div class="payment-demo-box" style="text-align: center; margin: 30px 0; padding: 20px; border: 1px dashed #ccc; border-radius: 8px;">
+            <p style="margin-bottom: 15px; color: #555;">測試商品：<strong>豪華帳篷一晚（金額：$1000 元）</strong></p>
+            
+            <!-- 重點：直接透過 form 觸發後端 /checkout，實現自動跳轉 -->
+			<form action="http://localhost:3000" method="POST">
+                <button type="submit" class="btn-checkout" style="background-color: #28a745; color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s;">
+                    💳 立即體驗綠界測試付款
+                </button>
+            </form>
+        </div>
+
+        <h3>🛠️ 技術亮點與實作內容</h3> 
+        <ul class="tech-list"> 
+            <li><strong>後端環境建置</strong>：使用 <strong>Node.js / Express</strong> 搭建輕量化網頁伺服器。</li> 
+            <li><strong>資安防護隔離</strong>：導入 <strong>dotenv</strong> 套件，將敏感的 <code>HashKey</code> 與 <code>HashIV</code> 抽離至 <code>.env</code> 環境變數中，防止私鑰外洩。</li> 
+            <li><strong>官方 SDK 整合</strong>：串接 <code>ecpay_aio_nodejs</code> 套件，自動生成符合規格的 SHA256 加密檢查碼（CheckMacValue）。</li> 
+            <li><strong>自動化除錯練習</strong>：成功修正專案中刻意保留的時間戳記與語法錯誤，實現本機環境與綠界測試付款頁面的無縫跳轉。</li> 
+        </ul> 
+    </div> 
+</div>
+
+	
+	
+
+	
+	
+	
+	
+	
     <footer>
         <p>© 2026 11430051. Powered by GitHub Pages.</p>
     </footer>
 
     <script>
-        /**
-         * 頁面區塊切換邏輯
-         */
         function switchSection(sectionNum) {
             document.getElementById('section1').classList.toggle('active', sectionNum === 1);
             document.getElementById('section2').classList.toggle('active', sectionNum === 2);
             document.getElementById('tab1').classList.toggle('active', sectionNum === 1);
             document.getElementById('tab2').classList.toggle('active', sectionNum === 2);
         }
-
-        /**
-         * 原本的完美路由腳本：過濾掉任何結尾的 .html 檔案名稱
-         */
         function navigateTo(folder, htmlFile) {
             const origin = window.location.origin;
             let pathSegments = window.location.pathname.split('/');
@@ -296,12 +268,10 @@
             if (pathSegments[pathSegments.length - 1].includes('.html')) {
                 pathSegments.pop();
             }
-            
             let basePath = pathSegments.join('/');
             if (!basePath.endsWith('/')) {
                 basePath += '/';
             }
-            
             const targetUrl = origin + basePath + folder + '/' + htmlFile;
             window.location.href = targetUrl;
         }
